@@ -39,7 +39,7 @@ export class DataDrivenComponent {
     this.myForm = formBuilder.group({
       'userData': formBuilder.group({
         'username': ['Max', [Validators.required, this.exampleValidator]],
-        'email': ['', [
+        'email': ['foobar@example.com', [
           Validators.required,
           Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
         ]]
@@ -62,6 +62,15 @@ export class DataDrivenComponent {
 
   onSubmit() {
     console.log(this.myForm);
+  }
+
+  onReset() {
+    while ((<FormArray>this.myForm.controls['hobbies']).length > 1){
+      (<FormArray>this.myForm.controls['hobbies']).removeAt((<FormArray>this.myForm.controls['hobbies']).length-1);
+    }
+    this.myForm.reset(
+      {userData: {username: 'Max', email: 'foobar@example.com'},  password: '', gender: 'male', hobbies: ['Cooking']}
+    );
   }
 
   exampleValidator(control: FormControl): {[s: string]: boolean} {
